@@ -1,0 +1,108 @@
+services:
+
+    php:
+        container_name: 'php'
+        build:
+            context: _docker
+            dockerfile: Dockerfile
+        ports:
+            - '9000:9000'
+        volumes:
+            - ./:/app
+        working_dir: '/app'
+        depends_on:
+            postgres:
+                condition: service_started
+            rabbitmq:
+                condition: service_started
+        deploy:
+            resources:
+                limits:
+                    cpus: '1.0'
+                    memory: '256M'
+                reservations:
+                    memory: '256M'
+
+
+    nginx:
+        image: nginx:stable-alpine
+        container_name: 'nginx'
+        working_dir: '/app'
+        ports:
+            - '8000:80'
+        volumes:
+            - ./:/app:ro
+            - ./_docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        deploy:
+            resources:
+                limits:
+                    cpus: '1.0'
+                    memory: '128M'
+
+
+    postgres:
+        image: postgres:15-alpine
+        ports:
+            - '15432:5432'
+        container_name: 'postgresql'
+        working_dir: '/app'
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: 'shop'
+            POSTGRES_USER: 'user'
+            POSTGRES_PASSWORD: 'password'
+        volumes:
+            - dump:/app/dump
+            - postgresql:/var/lib/postgresql/data
+        deploy:
+            resources:
+                limits:
+                    cpus: '1.5'
+                    memory: '1G'
+                reservations:
+                    memory: '256M'
+
+
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: 'rabbitmq'
+        working_dir: '/app'
+        hostname: rabbit-mq
+        ports:
+            - '15672:15672'
+            - '5672:5672'
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: password
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5'
+                    memory: 512M
+                reservations:
+                    memory: 256M
+
+
+    supervisor:
+        build:
+            context: _docker/supervisor
+            dockerfile: Dockerfile
+        container_name: 'supervisor'
+        volumes:
+            - ./:/app
+            - ./_docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+        working_dir: /app
+        command: [ "supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
+        depends_on:
+            rabbitmq:
+                condition: service_started
+        deploy:
+            resources:
+                limits:
+                    cpus: '1.0'
+                    memory: 128M
+
+
+volumes:
+    dump:
+    postgresql:
