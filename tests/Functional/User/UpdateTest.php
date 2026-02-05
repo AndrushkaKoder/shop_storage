@@ -6,7 +6,7 @@ namespace App\Tests\Functional\User;
 
 use App\Application\User\Service\AuthService;
 use App\Domain\User\Factory\UserFactory;
-use App\Infrastructure\Doctrine\User\UserRepository;
+use App\Domain\User\Repository\UserRepository;
 use App\Infrastructure\Http\Api\User\v1\Update\Controller;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;

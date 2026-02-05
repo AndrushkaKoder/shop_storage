@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Application\User\UseCase;
 
 use App\Domain\User\Entity\User;
-use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\Repository\UserRepository;
 use App\Infrastructure\Http\Api\User\v1\Update\Input\UpdateUserDto;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final readonly class UpdateUser
 {
     public function __construct(
-        private UserRepositoryInterface $repository,
+        private UserRepository $repository,
         private UserPasswordHasherInterface $passwordHasher
     ) {
     }

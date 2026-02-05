@@ -36,7 +36,6 @@ class RemoveUserTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertIsArray($content);
-        $this->assertArrayHasKey('id', $content['response']);
         $this->assertArrayHasKey('success', $content['response']);
     }
 }

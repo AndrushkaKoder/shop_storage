@@ -7,14 +7,14 @@ namespace App\Application\User\UseCase;
 use App\Application\Shared\Helper\StringHelper;
 use App\Application\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\Entity\User;
-use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\Repository\UserRepository;
 use App\Infrastructure\Http\Api\User\v1\Create\Input\CreateUserDto;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final readonly class CreateUser
 {
     public function __construct(
-        private UserRepositoryInterface $repository,
+        private UserRepository $repository,
         private UserPasswordHasherInterface $passwordHasher
     ) {
     }

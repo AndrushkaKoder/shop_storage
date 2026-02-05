@@ -13,7 +13,7 @@ final readonly class Manager
     {
     }
 
-    public function handle(User $user): int
+    public function handle(User $user): bool
     {
         return $this->useCase->handle($user);
     }

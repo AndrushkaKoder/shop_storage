@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\User\Entity;
 
 use App\Domain\Shared\Entity\EntityInterface;
+use App\Domain\User\Repository\UserRepository;
 use App\Domain\User\ValueObject\UserRole;
-use App\Infrastructure\Doctrine\User\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
