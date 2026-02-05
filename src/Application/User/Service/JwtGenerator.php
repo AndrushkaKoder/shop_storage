@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Shared\Service\Auth;
+namespace App\Application\User\Service;
 
 use App\Application\Shared\Contract\TokenGenerator;
 use App\Domain\User\Entity\User;

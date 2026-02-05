@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\User\UseCase;
 
-use App\Application\Shared\Service\Auth\AuthService;
 use App\Application\User\Exception\AuthException;
+use App\Application\User\Service\AuthService;
 use App\Infrastructure\Doctrine\User\UserRepository;
 use App\Infrastructure\Http\Api\User\v1\Auth\Input\AuthUserDto;
 

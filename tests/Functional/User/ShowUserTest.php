@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\User;
 
-use App\Application\Shared\Service\Auth\AuthService;
+use App\Application\User\Service\AuthService;
 use App\Domain\User\Factory\UserFactory;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\User;
 
-use App\Application\Shared\Service\Auth\AuthService;
+use App\Application\User\Service\AuthService;
 use App\Domain\User\Factory\UserFactory;
 use App\Infrastructure\Doctrine\User\UserRepository;
 use App\Infrastructure\Http\Api\User\v1\Update\Controller;
@@ -12,7 +12,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
