@@ -6,6 +6,7 @@ namespace App\Infrastructure\Resource\User\v1;
 
 use App\Domain\User\Entity\User;
 use App\Infrastructure\Contract\ResourceInterface;
+use App\Infrastructure\Resource\Cart\CartResource;
 
 final readonly class UserResource implements ResourceInterface
 {
@@ -21,7 +22,8 @@ final readonly class UserResource implements ResourceInterface
             'phone' => $this->user->getPhone(),
             'isActive' => $this->user->getIsActive(),
             'roles' => $this->user->getRoles(),
-            'createdAt' => $this->user->getCreatedAt()->format('Y-m-d H:i:s')
+            'createdAt' => $this->user->getCreatedAt()->format('Y-m-d H:i:s'),
+            'cart' => new CartResource($this->user->getCart()),
         ];
     }
 }

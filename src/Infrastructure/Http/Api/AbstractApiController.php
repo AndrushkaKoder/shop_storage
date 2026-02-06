@@ -21,8 +21,15 @@ abstract class AbstractApiController extends AbstractController
 
     public function wrapError(Throwable $throw): JsonResponse
     {
+        $code = $throw->getCode();
+
+        if ($code < 100 || $code >= 600) {
+            $code = 500;
+        }
+
+
         return new JsonResponse([
             'error' => $throw->getMessage()
-        ], $throw->getCode());
+        ], $code);
     }
 }

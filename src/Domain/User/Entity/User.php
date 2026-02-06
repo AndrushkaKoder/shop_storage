@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\Cart\Entity\Cart;
 use App\Domain\Shared\Entity\EntityInterface;
 use App\Domain\User\Repository\UserRepository;
 use App\Domain\User\ValueObject\UserRole;
@@ -47,6 +48,12 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
     public DateTimeImmutable $createdAt;
 
+    #[ORM\OneToOne(targetEntity: Cart::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    public ?Cart $cart = null;
+
+    public function __construct()
+    {
+    }
 
     public function getId(): int
     {
@@ -166,5 +173,21 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
     public function getUserIdentifier(): string
     {
         return $this->phone;
+    }
+
+    public function setCart(Cart $cart): static
+    {
+        $this->cart = $cart;
+
+        return $this;
+    }
+
+    public function getCart(): Cart
+    {
+        if (!$this->cart) {
+            $this->cart = new Cart();
+        }
+
+        return $this->cart;
     }
 }

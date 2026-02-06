@@ -6,6 +6,7 @@ namespace App\Domain\Product\Entity;
 
 use App\Domain\Category\Entity\Category;
 use App\Domain\Product\Repository\ProductRepository;
+use App\Domain\Shared\Entity\EntityInterface;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Index(name: 'products_active_idx', columns: ['is_active'])]
-class Product
+class Product implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,7 +35,7 @@ class Product
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $images = null;
 
-    #[ORM\Column(name:'is_active', type: 'boolean', nullable: false)]
+    #[ORM\Column(name: 'is_active', type: 'boolean', nullable: false)]
     public bool $is_active = true;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
@@ -44,7 +45,7 @@ class Product
     public DateTimeImmutable $createdAt;
 
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'products')]
-    private Collection $categories;
+    public Collection $categories;
 
     public function __construct()
     {

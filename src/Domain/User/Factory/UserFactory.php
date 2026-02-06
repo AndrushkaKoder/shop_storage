@@ -24,7 +24,7 @@ class UserFactory extends PersistentObjectFactory
     {
         return [
             'password' => 'password',
-            'phone' => self::faker()->unique(true)->numerify('9#########'),
+            'phone' => self::faker()->numerify('9#########'),
             'first_name' => self::faker()->userName(),
             'last_name' => self::faker()->userName(),
             'roles' => ['ROLE_USER'],

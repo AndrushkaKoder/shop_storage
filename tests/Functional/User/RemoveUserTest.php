@@ -9,9 +9,12 @@ use App\Domain\User\Factory\UserFactory;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
 class RemoveUserTest extends WebTestCase
 {
+    use ResetDatabase;
+
     #[Test]
     #[TestDox('Удаление юзера')]
     public function test_remove_user_successfully(): void

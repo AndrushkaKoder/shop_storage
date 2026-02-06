@@ -22,6 +22,7 @@ class ListProductsTest extends WebTestCase
     public function get_list_successfully(): void
     {
         $client = static::createClient();
+        ProductFactory::repository()->truncate();
         ProductFactory::createMany(10);
 
         $this->assertCount(
