@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthException extends \Exception
 {
-    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
+    public function __construct(?\Throwable $previous = null)
     {
         parent::__construct('Unauthenticated', Response::HTTP_UNAUTHORIZED, $previous);
     }

@@ -26,7 +26,7 @@ final readonly class ProductResource implements ResourceInterface
     }
 
     /**
-     * @return array<int, Product>
+     * @return array<int,mixed>
      */
     public static function collect(array $products): array
     {
