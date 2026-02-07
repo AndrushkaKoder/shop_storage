@@ -9,7 +9,6 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 class ProductFactory extends PersistentObjectFactory
 {
-
     protected function defaults(): array|callable
     {
         return [

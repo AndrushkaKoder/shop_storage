@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Domain\User\Entity;
 
 use App\Domain\Cart\Entity\Cart;
+use App\Domain\Order\Entity\Order;
 use App\Domain\Shared\Entity\EntityInterface;
 use App\Domain\User\Repository\UserRepository;
 use App\Domain\User\ValueObject\UserRole;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,8 +54,12 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
     #[ORM\OneToOne(targetEntity: Cart::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     public ?Cart $cart = null;
 
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
+    public Collection $orders;
+
     public function __construct()
     {
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): int
@@ -189,5 +196,10 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
         }
 
         return $this->cart;
+    }
+
+    public function getOrders(): Collection
+    {
+        return $this->orders;
     }
 }

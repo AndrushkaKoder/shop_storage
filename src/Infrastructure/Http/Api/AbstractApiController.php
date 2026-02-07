@@ -23,7 +23,7 @@ abstract class AbstractApiController extends AbstractController
     {
         $code = $throw->getCode();
 
-        if ($code < 100 || $code >= 600) {
+        if ($code < 100 || $code >= 599) {
             $code = 500;
         }
 
