@@ -24,3 +24,7 @@ services:
         resource: '../src/Domain/User/Factory/'
         tags: ['foundry.factory']
 
+    App\Application\Product\Service\Generator\ProductGenerator:
+        arguments:
+            $logger: '@monolog.logger.rabbitmq'
+

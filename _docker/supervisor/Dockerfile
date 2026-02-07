@@ -27,7 +27,9 @@ RUN apk update \
         linux-headers \
         curl \
         wget \
-        bash
+        bash \
+        rabbitmq-c-dev \
+        libssh-dev
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
@@ -39,17 +41,15 @@ RUN docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) \
     gd \
     bcmath \
     pdo_pgsql \
-    sockets \
     pcntl \
     zip
 
 RUN pecl channel-update pecl.php.net \
     && pecl install -o -f \
         redis \
-        event \
+        amqp \
     && rm -rf /tmp/pear \
-    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
-    && echo "extension=event.so" > /usr/local/etc/php/conf.d/event.ini
+    && docker-php-ext-enable redis amqp
 
 
 RUN apk add supervisor && mkdir /var/log/supervisor
