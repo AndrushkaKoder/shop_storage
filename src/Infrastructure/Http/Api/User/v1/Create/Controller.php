@@ -8,6 +8,7 @@ use App\Application\User\Exception\UserAlreadyExistsException;
 use App\Infrastructure\Http\Api\AbstractApiController;
 use App\Infrastructure\Http\Api\User\v1\Create\Input\CreateUserDto;
 use App\Infrastructure\Resource\User\v1\UserResource;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
+#[OA\Tag(name: 'User')]
 #[Route(path: 'api/v1')]
 class Controller extends AbstractApiController
 {

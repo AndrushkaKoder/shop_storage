@@ -7,6 +7,7 @@ namespace App\Infrastructure\Http\Api\Cart\v1\Add;
 use App\Domain\User\Entity\User;
 use App\Infrastructure\Http\Api\AbstractApiController;
 use App\Infrastructure\Http\Api\Cart\v1\Add\Input\AddToCartDto;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[AsController]
+#[OA\Tag(name: 'Cart')]
 #[Route(path: '/api/v1')]
 class Controller extends AbstractApiController
 {

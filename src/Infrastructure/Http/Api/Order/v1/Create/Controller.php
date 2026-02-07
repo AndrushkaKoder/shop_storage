@@ -6,6 +6,7 @@ namespace App\Infrastructure\Http\Api\Order\v1\Create;
 
 use App\Infrastructure\Http\Api\AbstractApiController;
 use App\Infrastructure\Http\Api\Order\v1\Create\Input\CreateOrderDto;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -13,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[AsController]
+#[OA\Tag(name: 'Order')]
 #[Route(path: '/api/v1')]
 class Controller extends AbstractApiController
 {
