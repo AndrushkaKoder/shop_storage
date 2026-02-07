@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\User\Service;
 
-
 use App\Application\Shared\Contract\TokenGenerator;
 use App\Application\User\Exception\AuthException;
 use App\Domain\User\Entity\User;
@@ -14,14 +13,11 @@ final readonly class AuthService
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private TokenGenerator $tokenGenerator
+        private TokenGenerator $tokenGenerator,
     ) {
     }
 
     /**
-     * @param User $user
-     * @param string $rawPassword
-     * @return string|null
      * @throws AuthException
      */
     public function attempt(User $user, string $rawPassword): ?string

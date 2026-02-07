@@ -20,7 +20,5 @@ class Controller extends AbstractApiController
     public function __invoke(#[MapRequestPayload] AuthUserDto $dto, Manager $manager): JsonResponse
     {
         return $this->wrapResponse(new JwtResource($manager->handle($dto)));
-
-
     }
 }

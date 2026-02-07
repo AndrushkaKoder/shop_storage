@@ -22,7 +22,7 @@ final readonly class CreateUserDto
 
         #[Assert\NotBlank]
         #[Assert\Length(min: 5)]
-        public ?string $password
+        public ?string $password,
     ) {
     }
 }

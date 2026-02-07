@@ -14,7 +14,7 @@ class Filter
 
     public function setFields(array $fields): static
     {
-        $this->fields = array_filter($fields, fn($v) => $v !== null && $v !== '');
+        $this->fields = array_filter($fields, fn ($v) => null !== $v && '' !== $v);
 
         return $this;
     }
@@ -22,7 +22,7 @@ class Filter
     public function setSort(string $column = 'id', string $direction = 'DESC'): static
     {
         $this->sortField = $column;
-        $this->sortDirection = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
+        $this->sortDirection = 'ASC' === strtoupper($direction) ? 'ASC' : 'DESC';
 
         return $this;
     }

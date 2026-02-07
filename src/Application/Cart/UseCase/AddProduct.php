@@ -16,9 +16,9 @@ final readonly class AddProduct
 
     public function handle(User $user, Product $product): bool
     {
-         $cart = $user->getCart()->addProduct($product);
+        $cart = $user->getCart()->addProduct($product);
 
-         $this->cartRepository->create($cart);
+        $this->cartRepository->create($cart);
 
         return true;
     }

@@ -20,7 +20,7 @@ final readonly class UpdateUserDto
         #[Assert\Type('string')]
         #[Assert\Type('string')]
         #[Assert\Length(min: 8, minMessage: 'Слишком короткий пароль')]
-        public ?string $password = null
+        public ?string $password = null,
     ) {
     }
 }

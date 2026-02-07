@@ -12,13 +12,11 @@ use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
 readonly class JwtGenerator implements TokenGenerator
 {
     public function __construct(
-        private JWTEncoderInterface $jwtEncoder
+        private JWTEncoderInterface $jwtEncoder,
     ) {
     }
 
     /**
-     * @param User $user
-     * @return string
      * @throws JWTEncodeFailureException
      */
     public function generate(User $user): string

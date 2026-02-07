@@ -16,7 +16,7 @@ class ShowProductTest extends WebTestCase
 
     #[Test]
     #[TestDox('Получение товара по ID')]
-    public function test_get_product_successfully(): void
+    public function testGetProductSuccessfully(): void
     {
         $client = static::createClient();
 
@@ -35,11 +35,11 @@ class ShowProductTest extends WebTestCase
 
     #[Test]
     #[TestDox('Товар не найден по ID')]
-    public function test_not_found_product(): void
+    public function testNotFoundProduct(): void
     {
         $client = static::createClient();
 
-        $client->request('GET', "/api/v1/products/" . rand(50, 100));
+        $client->request('GET', '/api/v1/products/'.rand(50, 100));
 
         $this->assertResponseStatusCodeSame(404);
     }

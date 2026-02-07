@@ -7,7 +7,6 @@ namespace App\Domain\Product\Entity;
 use App\Domain\Category\Entity\Category;
 use App\Domain\Product\Repository\ProductRepository;
 use App\Domain\Shared\Entity\EntityInterface;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,10 +38,10 @@ class Product implements EntityInterface
     public bool $is_active = true;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $updatedAt;
+    public \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $createdAt;
+    public \DateTimeImmutable $createdAt;
 
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'products')]
     public Collection $categories;
@@ -112,7 +111,7 @@ class Product implements EntityInterface
         return $this;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -121,12 +120,12 @@ class Product implements EntityInterface
     #[ORM\PreUpdate]
     public function setUpdatedAtValue(): static
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -134,7 +133,7 @@ class Product implements EntityInterface
     #[ORM\PrePersist]
     public function setCreatedAtValue(): static
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -150,7 +149,6 @@ class Product implements EntityInterface
 
         return $this;
     }
-
 
     public function addCategory(Category $category): static
     {
@@ -173,6 +171,7 @@ class Product implements EntityInterface
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
+
         return $this;
     }
 

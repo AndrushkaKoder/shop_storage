@@ -19,6 +19,6 @@ final readonly class Manager
     {
         $method = PaymentMethod::tryFrom($dto->paymentMethod);
 
-        return $this->useCase->handle($user,$method);
+        return $this->useCase->handle($user, $method);
     }
 }

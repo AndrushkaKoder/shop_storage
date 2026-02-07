@@ -20,7 +20,7 @@ class CreateUserTest extends WebTestCase
 
     #[Test]
     #[TestDox('Создание пользователя')]
-    public function test_create_user_successfully(): void
+    public function testCreateUserSuccessfully(): void
     {
         $client = static::createClient();
         $faker = Factory::create();
@@ -29,7 +29,7 @@ class CreateUserTest extends WebTestCase
             'firstName' => $faker->firstName(),
             'lastName' => $faker->lastName(),
             'phone' => '9991234567',
-            'password' => 'secret123'
+            'password' => 'secret123',
         ];
 
         $client->request(

@@ -7,7 +7,6 @@ namespace App\Infrastructure\Http\Api\User\v1\Update;
 use App\Domain\User\Entity\User;
 use App\Infrastructure\Http\Api\AbstractApiController;
 use App\Infrastructure\Http\Api\User\v1\Update\Input\UpdateUserDto;
-use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -22,14 +21,14 @@ class Controller extends AbstractApiController
     public function __invoke(
         #[MapEntity] User $user,
         #[MapRequestPayload] UpdateUserDto $dto,
-        Manager $manager
+        Manager $manager,
     ): JsonResponse {
         try {
             return $this->wrapResponse([
                 'success' => true,
-                'id' => $manager->handle($user, $dto)
+                'id' => $manager->handle($user, $dto),
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->wrapError($e);
         }
     }

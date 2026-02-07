@@ -13,7 +13,7 @@ final readonly class UpdateUser
 {
     public function __construct(
         private UserRepository $repository,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
@@ -21,7 +21,6 @@ final readonly class UpdateUser
     {
         $user->setFirstName($dto->firstName)
             ->setLastName($dto->lastName);
-
 
         if ($dto->password) {
             $user->setPassword($this->passwordHasher->hashPassword($user, $dto->password));

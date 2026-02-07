@@ -21,12 +21,12 @@ class CreateOrderTest extends WebTestCase
 
     #[Test]
     #[TestDox('Успешное создание заказа')]
-    public function test_create_order_successfully(): void
+    public function testCreateOrderSuccessfully(): void
     {
         $client = static::createClient();
 
         $user = UserFactory::createOne([
-            'phone' => '9533298091'
+            'phone' => '9533298091',
         ]);
 
         $jwt = $this->getContainer()
@@ -34,7 +34,7 @@ class CreateOrderTest extends WebTestCase
             ->create($user);
 
         CartFactory::createOne([
-            'user' => $user
+            'user' => $user,
         ]);
 
         $client->request(
@@ -66,7 +66,7 @@ class CreateOrderTest extends WebTestCase
 
     #[Test]
     #[TestDox('Ошибка при попытке создать заказ без авторизации')]
-    public function test_error_create_order_when_unauthorized(): void
+    public function testErrorCreateOrderWhenUnauthorized(): void
     {
         static::createClient()->request(
             'POST',

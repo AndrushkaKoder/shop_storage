@@ -17,7 +17,7 @@ class AuthUserTest extends WebTestCase
 
     #[Test]
     #[TestDox('Авторизация пользователя по телефону и паролю и получение JWT')]
-    public function test_auth_user_successfully(): void
+    public function testAuthUserSuccessfully(): void
     {
         $client = self::createClient();
 

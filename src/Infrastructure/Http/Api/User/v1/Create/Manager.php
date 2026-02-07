@@ -16,8 +16,6 @@ final readonly class Manager
     }
 
     /**
-     * @param CreateUserDto $dto
-     * @return User
      * @throws UserAlreadyExistsException
      */
     public function handle(CreateUserDto $dto): User

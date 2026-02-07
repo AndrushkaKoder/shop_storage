@@ -18,7 +18,7 @@ final readonly class UserResource implements ResourceInterface
     {
         return [
             'id' => $this->user->getId(),
-            'name' => $this->user->getFirstName() . ' ' . $this->user->getLastName(),
+            'name' => $this->user->getFirstName().' '.$this->user->getLastName(),
             'phone' => $this->user->getPhone(),
             'isActive' => $this->user->getIsActive(),
             'roles' => $this->user->getRoles(),

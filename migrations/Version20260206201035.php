@@ -11,8 +11,7 @@ final class Version20260206201035 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql
-        (
+        $this->addSql(
             'CREATE TABLE
                 "cart"
                 (
@@ -27,8 +26,7 @@ final class Version20260206201035 extends AbstractMigration
 
         $this->addSql('CREATE UNIQUE INDEX UNIQ_BA388B7A76ED395 ON "cart" (user_id)');
 
-        $this->addSql
-        (
+        $this->addSql(
             'CREATE TABLE
                 "cart_product"
                 (
@@ -41,20 +39,17 @@ final class Version20260206201035 extends AbstractMigration
 
         $this->addSql('CREATE INDEX IDX_2890CCAA4584665A ON "cart_product" (product_id)');
 
-        $this->addSql
-        (
+        $this->addSql(
             'ALTER TABLE
                 "cart"
                 ADD CONSTRAINT FK_BA388B7A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE'
         );
-        $this->addSql
-        (
+        $this->addSql(
             'ALTER TABLE
                 "cart_product"
                 ADD CONSTRAINT FK_2890CCAA1AD5CDBF FOREIGN KEY (cart_id) REFERENCES "cart" (id) ON DELETE CASCADE NOT DEFERRABLE'
         );
-        $this->addSql
-        (
+        $this->addSql(
             'ALTER TABLE
                 "cart_product"
                 ADD CONSTRAINT FK_2890CCAA4584665A FOREIGN KEY (product_id) REFERENCES "product" (id) ON DELETE CASCADE NOT DEFERRABLE'

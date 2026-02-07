@@ -20,13 +20,13 @@ class AddToCartTest extends WebTestCase
 
     #[Test]
     #[TestDox('Добавление товара в корзину авторизованному юзеру')]
-    public function test_add_to_cart_successfully(): void
+    public function testAddToCartSuccessfully(): void
     {
         $client = static::createClient();
 
         /** @var User $user */
         $user = UserFactory::createOne([
-            'phone' => '0123456655'
+            'phone' => '0123456655',
         ]);
         $token = $this->getContainer()->get(JWTTokenManagerInterface::class)->create($user);
         $product = ProductFactory::createOne();
@@ -54,7 +54,7 @@ class AddToCartTest extends WebTestCase
 
     #[Test]
     #[TestDox('Ошибка при попытке менять корзину без авторизации')]
-    public function test_error_add_to_cart_when_unauthorized(): void
+    public function testErrorAddToCartWhenUnauthorized(): void
     {
         $client = static::createClient();
         $product = ProductFactory::createOne();

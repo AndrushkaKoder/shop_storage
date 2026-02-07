@@ -6,5 +6,4 @@ namespace App\Application\Product\UseCase;
 
 final readonly class CreateProduct
 {
-
 }

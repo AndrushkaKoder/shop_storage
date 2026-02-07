@@ -8,7 +8,6 @@ use App\Infrastructure\Contract\ResourceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 abstract class AbstractApiController extends AbstractController
 {
@@ -19,7 +18,7 @@ abstract class AbstractApiController extends AbstractController
         ], $code);
     }
 
-    public function wrapError(Throwable $throw): JsonResponse
+    public function wrapError(\Throwable $throw): JsonResponse
     {
         $code = $throw->getCode();
 
@@ -27,9 +26,8 @@ abstract class AbstractApiController extends AbstractController
             $code = 500;
         }
 
-
         return new JsonResponse([
-            'error' => $throw->getMessage()
+            'error' => $throw->getMessage(),
         ], $code);
     }
 }

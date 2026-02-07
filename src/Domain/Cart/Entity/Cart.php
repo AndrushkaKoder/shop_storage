@@ -8,14 +8,13 @@ use App\Domain\Cart\Repository\CartRepository;
 use App\Domain\Product\Entity\Product;
 use App\Domain\Shared\Entity\EntityInterface;
 use App\Domain\User\Entity\User;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
 #[Table(name: '`cart`')]
@@ -34,10 +33,10 @@ class Cart implements EntityInterface
     public float $totalSum = 0;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $updatedAt;
+    public \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $createdAt;
+    public \DateTimeImmutable $createdAt;
 
     #[ORM\ManyToMany(targetEntity: Product::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: '`cart_product`')]
@@ -86,12 +85,12 @@ class Cart implements EntityInterface
         return $this;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -99,7 +98,7 @@ class Cart implements EntityInterface
     #[ORM\PrePersist]
     public function setCreatedAtValue(): static
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -108,7 +107,7 @@ class Cart implements EntityInterface
     #[ORM\PreUpdate]
     public function setUpdatedAtValue(): static
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -119,7 +118,6 @@ class Cart implements EntityInterface
     }
 
     /**
-     * @param Product $product
      * @return $this
      */
     public function addProduct(Product $product): static
@@ -128,15 +126,15 @@ class Cart implements EntityInterface
             $this->products->add($product);
             $this->setTotalSum($this->getTotalSum() + $product->getPrice());
         }
+
         return $this;
     }
 
     /**
-     * @param Product $product
      * @return $this
      */
     public function removeProduct(
-        Product $product
+        Product $product,
     ): static {
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);

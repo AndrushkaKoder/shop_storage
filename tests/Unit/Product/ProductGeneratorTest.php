@@ -13,7 +13,7 @@ class ProductGeneratorTest extends TestCase
 {
     #[Test]
     #[TestDox('Тест генерации товаров')]
-    public function test_get_generator_with_products(): void
+    public function testGetGeneratorWithProducts(): void
     {
         $generator = new ProductGenerator();
 
@@ -24,7 +24,7 @@ class ProductGeneratorTest extends TestCase
         $this->assertIsIterable($res);
 
         foreach ($res as $item) {
-            $countItems++;
+            ++$countItems;
         }
 
         $this->assertEquals(500, $countItems);

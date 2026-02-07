@@ -11,9 +11,8 @@ final class Version20260207070322 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql
-        (
-        'CREATE TABLE
+        $this->addSql(
+            'CREATE TABLE
             "order_product"
             (
                 order_id INT NOT NULL,

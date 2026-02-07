@@ -13,7 +13,6 @@ final readonly class ProductFilterDto
         public ?string $name = null,
         #[Assert\Type('string')]
         public ?string $sort = null,
-    )
-    {
+    ) {
     }
 }

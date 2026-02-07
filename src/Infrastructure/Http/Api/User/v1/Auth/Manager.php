@@ -10,9 +10,8 @@ use App\Infrastructure\Http\Api\User\v1\Auth\Input\AuthUserDto;
 final readonly class Manager
 {
     public function __construct(
-        private AuthUser $useCase
-    )
-    {
+        private AuthUser $useCase,
+    ) {
     }
 
     public function handle(AuthUserDto $dto): string

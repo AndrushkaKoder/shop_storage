@@ -15,11 +15,6 @@ final readonly class CreateOrder
     ) {
     }
 
-    /**
-     * @param User $user
-     * @param PaymentMethod $paymentMethod
-     * @return int
-     */
     public function handle(User $user, PaymentMethod $paymentMethod): int
     {
         $newOrder = $this->repository->createNewOrder($user, $paymentMethod);

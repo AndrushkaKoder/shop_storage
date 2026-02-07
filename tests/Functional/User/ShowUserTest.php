@@ -17,7 +17,7 @@ class ShowUserTest extends WebTestCase
 
     #[Test]
     #[TestDox('Удаление юзера')]
-    public function test_show_user_successfully(): void
+    public function testShowUserSuccessfully(): void
     {
         $client = static::createClient();
 

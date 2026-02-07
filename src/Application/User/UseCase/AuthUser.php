@@ -14,13 +14,10 @@ final readonly class AuthUser
     public function __construct(
         private UserRepository $userRepository,
         private AuthService $authService,
-
     ) {
     }
 
     /**
-     * @param AuthUserDto $dto
-     * @return string
      * @throws AuthException
      */
     public function handle(AuthUserDto $dto): string

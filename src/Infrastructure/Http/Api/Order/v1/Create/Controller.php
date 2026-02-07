@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Throwable;
 
 #[AsController]
 #[Route(path: '/api/v1')]
@@ -21,14 +20,14 @@ class Controller extends AbstractApiController
     public function __invoke(
         #[CurrentUser] $user,
         #[MapRequestPayload] CreateOrderDto $dto,
-        Manager $manager
+        Manager $manager,
     ): JsonResponse {
         try {
             return $this->wrapResponse([
                 'success' => true,
-                'orderId' => $manager->handle($user, $dto)
+                'orderId' => $manager->handle($user, $dto),
             ]);
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             return $this->wrapError($e);
         }
     }

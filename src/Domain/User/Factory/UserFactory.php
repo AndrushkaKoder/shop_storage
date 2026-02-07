@@ -19,7 +19,6 @@ class UserFactory extends PersistentObjectFactory
         $this->passwordHasher = $passwordHasher;
     }
 
-
     protected function defaults(): array|callable
     {
         return [

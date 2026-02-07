@@ -15,13 +15,11 @@ final readonly class CreateUser
 {
     public function __construct(
         private UserRepository $repository,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
     /**
-     * @param CreateUserDto $dto
-     * @return User
      * @throws UserAlreadyExistsException
      */
     public function handle(CreateUserDto $dto): User
@@ -39,6 +37,9 @@ final readonly class CreateUser
             ->setRoles()
             ->setIsActive(true);
 
-        return $this->repository->create($user);
+        /** @var User $newUser */
+        $newUser = $this->repository->create($user);
+
+        return $newUser;
     }
 }

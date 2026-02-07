@@ -26,11 +26,10 @@ final readonly class ProductResource implements ResourceInterface
     }
 
     /**
-     * @param array $products
      * @return array<int, Product>
      */
     public static function collect(array $products): array
     {
-        return array_map(fn(Product $product) => new self($product)->present(), $products);
+        return array_map(fn (Product $product) => new self($product)->present(), $products);
     }
 }

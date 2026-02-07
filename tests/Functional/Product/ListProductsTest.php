@@ -19,7 +19,7 @@ class ListProductsTest extends WebTestCase
 
     #[Test]
     #[TestDox('Получение списка товаров')]
-    public function get_list_successfully(): void
+    public function getListSuccessfully(): void
     {
         $client = static::createClient();
 

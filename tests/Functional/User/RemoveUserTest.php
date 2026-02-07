@@ -17,7 +17,7 @@ class RemoveUserTest extends WebTestCase
 
     #[Test]
     #[TestDox('Удаление юзера')]
-    public function test_remove_user_successfully(): void
+    public function testRemoveUserSuccessfully(): void
     {
         $client = static::createClient();
 

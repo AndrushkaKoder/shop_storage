@@ -10,7 +10,6 @@ use App\Domain\Order\ValueObject\Status;
 use App\Domain\Product\Entity\Product;
 use App\Domain\Shared\Entity\EntityInterface;
 use App\Domain\User\Entity\User;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,10 +40,10 @@ class Order implements EntityInterface
     public PaymentMethod $paymentMethod;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $updatedAt;
+    public \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $createdAt;
+    public \DateTimeImmutable $createdAt;
 
     #[ORM\ManyToMany(targetEntity: Product::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: '`order_product`')]
@@ -94,12 +93,12 @@ class Order implements EntityInterface
         return $this;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -107,7 +106,7 @@ class Order implements EntityInterface
     #[ORM\PrePersist]
     public function setCreatedAtValue(): static
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -116,7 +115,7 @@ class Order implements EntityInterface
     #[ORM\PreUpdate]
     public function setUpdatedAtValue(): static
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

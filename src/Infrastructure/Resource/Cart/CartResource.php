@@ -22,8 +22,8 @@ final readonly class CartResource implements ResourceInterface
             'products' => $this->cart
                 ->getProducts()
                 ->map(
-                    fn(Product $product) => new ProductResource($product)->present()
-                )
+                    fn (Product $product) => new ProductResource($product)->present()
+                ),
         ];
     }
 }

@@ -15,14 +15,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
-#[CoversMethod(className: Controller::class, methodName: "__invoke")]
+#[CoversMethod(className: Controller::class, methodName: '__invoke')]
 class UpdateTest extends WebTestCase
 {
     use ResetDatabase;
 
     #[Test]
     #[TestDox('Обновление юзера')]
-    public function test_update_user_successfully(): void
+    public function testUpdateUserSuccessfully(): void
     {
         $client = static::createClient();
 
@@ -46,11 +46,11 @@ class UpdateTest extends WebTestCase
             json_encode([
                 'firstName' => $newName,
                 'lastName' => $newLastName,
-                'password' => $newPassword
+                'password' => $newPassword,
             ])
         );
 
-      $this->assertResponseIsSuccessful();
+        $this->assertResponseIsSuccessful();
 
         $json = json_decode($client->getResponse()->getContent(), true);
 

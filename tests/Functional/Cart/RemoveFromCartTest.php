@@ -21,13 +21,13 @@ class RemoveFromCartTest extends WebTestCase
 
     #[Test]
     #[TestDox('Удаление товара из корзины')]
-    public function test_remove_product_from_cart(): void
+    public function testRemoveProductFromCart(): void
     {
         $client = static::createClient();
 
         /** @var User $user */
         $user = UserFactory::createOne([
-            'phone' => '0123456666'
+            'phone' => '0123456666',
         ]);
         $token = $this->getContainer()->get(JWTTokenManagerInterface::class)->create($user);
         $product = ProductFactory::createOne();
@@ -57,10 +57,9 @@ class RemoveFromCartTest extends WebTestCase
         $this->assertEmpty($updatedUser->getCart()->getProducts());
     }
 
-
     #[Test]
     #[TestDox('Ошибка при попытке менять корзину без авторизации')]
-    public function test_error_remove_from_cart_when_unauthorized(): void
+    public function testErrorRemoveFromCartWhenUnauthorized(): void
     {
         $client = static::createClient();
         $product = ProductFactory::createOne();

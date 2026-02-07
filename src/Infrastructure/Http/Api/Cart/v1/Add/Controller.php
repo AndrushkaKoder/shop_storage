@@ -21,10 +21,10 @@ class Controller extends AbstractApiController
     public function __invoke(
         #[CurrentUser] User $user,
         #[MapRequestPayload] AddToCartDto $dto,
-        Manager $manager
+        Manager $manager,
     ): JsonResponse {
         return $this->wrapResponse([
-            'success' => $manager->handle($user, $dto)
+            'success' => $manager->handle($user, $dto),
         ]);
     }
 }

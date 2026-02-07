@@ -16,6 +16,6 @@ final readonly class Manager
 
     public function handle(User $user, UpdateUserDto $dto): int
     {
-      return $this->useCase->handle($user, $dto);
+        return $this->useCase->handle($user, $dto);
     }
 }

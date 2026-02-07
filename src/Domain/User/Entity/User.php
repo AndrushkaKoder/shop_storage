@@ -9,7 +9,6 @@ use App\Domain\Order\Entity\Order;
 use App\Domain\Shared\Entity\EntityInterface;
 use App\Domain\User\Repository\UserRepository;
 use App\Domain\User\ValueObject\UserRole;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,10 +45,10 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
     public array $roles = [];
 
     #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $updatedAt;
+    public \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
-    public DateTimeImmutable $createdAt;
+    public \DateTimeImmutable $createdAt;
 
     #[ORM\OneToOne(targetEntity: Cart::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     public ?Cart $cart = null;
@@ -150,12 +149,12 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
         return $this;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -163,7 +162,7 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
     #[ORM\PrePersist]
     public function setCreatedAtValue(): static
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -172,7 +171,7 @@ class User implements EntityInterface, UserInterface, PasswordAuthenticatedUserI
     #[ORM\PreUpdate]
     public function setUpdatedAtValue(): static
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
