@@ -6,6 +6,7 @@ namespace App\Domain\Category\Entity;
 
 use App\Domain\Category\Repository\CategoryRepository;
 use App\Domain\Product\Entity\Product;
+use App\Domain\Shared\Entity\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`category`')]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Category
+class Category implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,7 +37,7 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     public Collection $children;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'categories', cascade: ['persist'])]
     #[ORM\JoinTable(name: 'category_product')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -107,6 +108,15 @@ class Category
             $this->products->add($product);
 
             $product->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function addProducts(array $products): static
+    {
+        foreach ($products as $product) {
+            $this->addProduct($product);
         }
 
         return $this;

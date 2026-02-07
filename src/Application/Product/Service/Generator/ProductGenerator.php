@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Product\Service\Generator;
 
+use App\Application\Product\Service\Parser\StoreParser;
 use App\Application\Product\Service\ValueObject\ProductGeneratorSource;
 use App\Application\Shared\Contract\EntityGenerator;
+use App\Domain\Category\Entity\Category;
+use App\Domain\Category\Repository\CategoryRepository;
 use App\Domain\Product\Entity\Product;
 use App\Domain\Product\Repository\ProductRepository;
 use Psr\Log\LoggerInterface;
@@ -14,7 +17,9 @@ final readonly class ProductGenerator implements EntityGenerator
 {
     public function __construct(
         private ProductRepository $productRepository,
+        private CategoryRepository $categoryRepository,
         private LoggerInterface $logger,
+        private StoreParser $parser,
     ) {
     }
 
@@ -31,7 +36,7 @@ final readonly class ProductGenerator implements EntityGenerator
 
             $this->logger->info('Товары успешно добавлены');
         } catch (\Throwable $e) {
-            $this->logger->error('Товары не добавлены: '.$e->getMessage());
+            $this->logger->error('Товары не добавлены: ' . $e->getMessage());
         }
     }
 
@@ -73,8 +78,40 @@ final readonly class ProductGenerator implements EntityGenerator
         }
     }
 
-    private function generateFromParsing(): \Generator
+    /**
+     * Парсинг стороннего магазина.
+     */
+    private function generateFromParsing(): bool
     {
-        return new \Generator();
+        sleep(30);
+
+        $categories = $this->parser->parseOutsideShop();
+
+        foreach ($categories as $data) {
+            $category = $this->categoryRepository->findOneBy(['name' => $data['name']]);
+
+            if (is_null($category)) {
+                $category = new Category();
+
+                $category->setName($data['name']);
+
+                $newProducts = [];
+                foreach ($data['products'] as $dataProduct) {
+                    if (!is_null($dataProduct['name'])) {
+                        $newProducts[] = new Product()
+                            ->setName($dataProduct['name'])
+                            ->setPrice($dataProduct['price'])
+                            ->setIsActive(true)
+                            ->setImages([$dataProduct['image']]);
+                    }
+                }
+
+                $category->addProducts($newProducts);
+
+                $this->categoryRepository->create($category);
+            }
+        }
+
+        return true;
     }
 }

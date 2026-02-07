@@ -11,26 +11,29 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsCommand(name: 'app:product:create', description: 'Генерация товаров')]
-readonly class ProductCreateCommand
+#[AsCommand(name: 'product:create', description: 'Генерация товаров (парсинг/рандом/файл)')]
+final readonly class ProductBusCommand
 {
+    private ProductGeneratorSource $source;
+
     public function __construct(
         private MessageBusInterface $messageBus,
     ) {
+        $this->source = ProductGeneratorSource::PARSER;
     }
 
     public function __invoke(OutputInterface $output): int
     {
         try {
-            $this->messageBus->dispatch(new CreateProductAsync(ProductGeneratorSource::RANDOM->value));
+            $this->messageBus->dispatch(new CreateProductAsync($this->source->value));
             $output->writeln('Сообщение отправлено в шину');
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {
             $output->writeln(
                 'Ошибка отправки cooбщения '
-                .CreateProductAsync::class
-                .' в очередь :'.$e->getMessage()
+                . CreateProductAsync::class
+                . ' в очередь :' . $e->getMessage()
             );
 
             return Command::FAILURE;
