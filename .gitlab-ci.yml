@@ -16,7 +16,7 @@ cache:
 install_deps:
     stage: prepare
     before_script:
-        - apk update && apk add --no-cache git unzip curl libzip-dev
+        - apk add --no-cache git unzip curl libzip-dev rabbitmq-c-dev autoconf g++ make
         - docker-php-ext-install zip
 
         - pecl install amqp
