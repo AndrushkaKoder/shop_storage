@@ -1,8 +1,11 @@
 stages:
     - prepare
-    - test
-    - phpstan
-    - doctrine
+    - check
+
+default:
+    image: php:8.4-fpm-alpine
+    tags:
+        - runner
 
 cache:
     key: ${CI_COMMIT_REF_SLUG}
@@ -12,15 +15,12 @@ cache:
 
 install_deps:
     stage: prepare
-    image: php:8.4-fpm-alpine
-    tags:
-        - runner
     before_script:
         - apk update && apk add --no-cache git unzip curl libzip-dev
         - docker-php-ext-install zip
 
-        - apk add --no-cache rabbitmq-c-dev
-        - docker-php-ext-install amqp
+        - pecl install amqp
+        - docker-php-ext-enable amqp
 
         - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     script:
@@ -31,32 +31,15 @@ install_deps:
         expire_in: 1 hour
 
 
-test:
-    stage: test
-    image: php:8.4-alpine
-    tags:
-        - runner
-    dependencies:
-        - install_deps
-    script:
-        - bin/console/phpunit --testdox
-phpstan:
-    stage: phpstan
-    image: php:8.4-cli
-    tags:
-        - runner
-    dependencies:
-        - install_deps
-    script:
-        - vendor/bin/phpstan analyse
+phpunit:
+    stage: check
+    script: bin/console/phpunit
 
-doctrine:
-    stage: doctrine
-    image: php:8.4-cli
-    tags:
-        - runner
-    dependencies:
-        - install_deps
-    script:
-        - bin/console doctrine:schema:validate
+phpstan:
+    stage: check
+    script: vendor/bin/phpstan analyse
+
+doctrine_validate:
+    stage: check
+    script: bin/console doctrine:schema:validate
 
