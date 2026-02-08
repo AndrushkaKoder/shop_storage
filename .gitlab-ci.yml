@@ -9,20 +9,15 @@ variables:
 build_image:
     stage: build
     image: docker:latest
-    services:
-        - docker:dind
     tags:
         - runner
     script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-        - docker build -t $CI_IMAGE .
-        - docker push $CI_IMAGE
+        - docker build -t my-local-php-ci:latest .
     only:
         changes:
             - Dockerfile
-
 default:
-    image: $CI_REGISTRY_IMAGE:latest
+    image: my-local-php-ci:latest
     tags:
         - runner
 
