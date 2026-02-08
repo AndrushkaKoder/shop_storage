@@ -1,0 +1,57 @@
+stages:
+    - prepare
+    - test
+    - phpstan
+    - doctrine
+
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - vendor/
+        - $HOME/.composer/cache
+
+install_deps:
+    stage: prepare
+    image: php:8.4-fpm-alpine
+    tags:
+        - runner
+    before_script:
+        - apk update && apk add --no-cache git unzip curl libzip-dev
+        - docker-php-ext-install zip
+        - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    script:
+        - composer install --no-progress --no-interaction
+    artifacts:
+        paths:
+            - vendor/
+        expire_in: 1 hour
+
+test:
+    stage: test
+    image: php:8.4-alpine
+    tags:
+        - runner
+    dependencies:
+        - install_deps
+    script:
+        - bin/console/phpunit --testdox
+phpstan:
+    stage: phpstan
+    image: php:8.4-cli
+    tags:
+        - runner
+    dependencies:
+        - install_deps
+    script:
+        - vendor/bin/phpstan analyse
+
+doctrine:
+    stage: doctrine
+    image: php:8.4-cli
+    tags:
+        - runner
+    dependencies:
+        - install_deps
+    script:
+        - bin/console doctrine:schema:validate
+
