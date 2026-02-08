@@ -19,7 +19,7 @@ default:
         - name: postgres:16-alpine
           alias: postgres
     before_script:
-        - apk add --no-cache libzip rabbitmq-c postgresql-libs openssl
+        - apk add --no-cache libzip-dev rabbitmq-c-dev postgresql-dev openssl
         - mkdir -p config/jwt
         - openssl genrsa -out config/jwt/private.pem -passout pass:7b07f422850ea44fc459ac2b05c2e471c94b73d6cb78e65606eb57dd3fc6a5bd 4096
         - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem -passin pass:7b07f422850ea44fc459ac2b05c2e471c94b73d6cb78e65606eb57dd3fc6a5bd
@@ -49,8 +49,11 @@ phpunit:
     extends: .test_env
     stage: check
     script:
-        - bin/console doctrine:database:create --if-not-exists
-        - bin/console doctrine:schema:update --force
+        - chmod -R 777 var/
+        - php bin/console doctrine:database:create --if-not-exists --env=test
+        - php bin/console doctrine:schema:update --force --env=test
+        - php bin/console cache:clear --env=test
+        - php bin/console cache:warmup --env=test
         - vendor/bin/phpunit --testdox
 
 phpstan:
