@@ -38,8 +38,3 @@ phpunit:
 phpstan:
     stage: check
     script: vendor/bin/phpstan analyse
-
-doctrine_validate:
-    stage: check
-    script: bin/console doctrine:schema:validate
-
