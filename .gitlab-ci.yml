@@ -1,28 +1,38 @@
 stages:
+    - build
     - prepare
     - check
 
+variables:
+    CI_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+build_image:
+    stage: build
+    image: docker:latest
+    services:
+        - docker:dind
+    tags:
+        - runner
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker build -t $CI_IMAGE .
+        - docker push $CI_IMAGE
+    only:
+        changes:
+            - Dockerfile
+
 default:
-    image: php:8.4-fpm-alpine
+    image: $CI_REGISTRY_IMAGE:latest
     tags:
         - runner
 
 cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
-        - vendor/
-        - $HOME/.composer/cache
+        - .composer-cache/
 
 install_deps:
     stage: prepare
-    before_script:
-        - apk add --no-cache git unzip curl libzip-dev rabbitmq-c-dev autoconf g++ make
-        - docker-php-ext-install zip
-
-        - pecl install amqp
-        - docker-php-ext-enable amqp
-
-        - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
     script:
         - composer install --no-progress --no-interaction
     artifacts:
@@ -33,7 +43,7 @@ install_deps:
 
 phpunit:
     stage: check
-    script: bin/console/phpunit
+    script: bin/phpunit --testdox
 
 phpstan:
     stage: check
