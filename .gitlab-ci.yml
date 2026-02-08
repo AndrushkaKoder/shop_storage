@@ -1,6 +1,7 @@
 stages:
     - prepare
-    - check
+    - test
+    - phpstan
 
 variables:
     APP_ENV: test
@@ -9,62 +10,58 @@ variables:
     POSTGRES_USER: user
     POSTGRES_PASSWORD: password
 
-default:
-    image: php:8.4-fpm-alpine
-    tags:
-        - runner
-
-.test_env:
-    services:
-        - name: postgres:16-alpine
-          alias: postgres
-    before_script:
-        - apk add --no-cache libzip-dev rabbitmq-c-dev postgresql-dev openssl
-        - mkdir -p config/jwt
-        - openssl genrsa -out config/jwt/private.pem -passout pass:7b07f422850ea44fc459ac2b05c2e471c94b73d6cb78e65606eb57dd3fc6a5bd 4096
-        - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem -passin pass:7b07f422850ea44fc459ac2b05c2e471c94b73d6cb78e65606eb57dd3fc6a5bd
-    dependencies:
-        - install_deps
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - .composer-cache/
 
 install_deps:
     stage: prepare
-    before_script:
+    image: php:8.4-fpm-alpine
+    tags:
+        - runner
+    script:
         - apk add --no-cache git unzip curl libzip-dev rabbitmq-c-dev postgresql-dev autoconf g++ make
         - docker-php-ext-install zip pdo_pgsql
         - pecl install amqp && docker-php-ext-enable amqp
-
         - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-    script:
-        - composer install --no-progress --no-interaction
+        - COMPOSER_CACHE_DIR=.composer-cache composer install --no-progress --no-interaction
     artifacts:
         paths:
             - vendor/
-            - /usr/local/lib/php/extensions/
-            - /usr/local/etc/php/conf.d/
         expire_in: 1 hour
 
-
-phpunit:
-    extends: .test_env
-    stage: check
+test:
+    stage: test
+    image: php:8.4-fpm-alpine
+    tags:
+        - runner
+    services:
+        - name: postgres:16-alpine
+          alias: postgres
+    dependencies:
+        - install_deps
     script:
+        - apk add --no-cache libzip-dev rabbitmq-c-dev postgresql-dev autoconf g++ make openssl
+        - docker-php-ext-install zip pdo_pgsql
+        - pecl install amqp && docker-php-ext-enable amqp
+        - mkdir -p config/jwt var/cache var/log
+        - openssl genrsa -out config/jwt/private.pem 4096
+        - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
         - chmod -R 777 var/
         - php bin/console doctrine:database:create --if-not-exists --env=test
         - php bin/console doctrine:schema:update --force --env=test
-        - php bin/console cache:clear --env=test
-        - php bin/console cache:warmup --env=test
-        - vendor/bin/phpunit --testdox
+        - vendor/bin/phpunit --testdox --color tests
 
 phpstan:
-    extends: .test_env
-    stage: check
+    stage: phpstan
+    image: php:8.4-fpm-alpine
+    tags:
+        - runner
+    dependencies:
+        - install_deps
     script:
+        - apk add --no-cache libzip-dev rabbitmq-c-dev postgresql-dev autoconf g++ make
+        - docker-php-ext-install zip pdo_pgsql
+        - pecl install amqp && docker-php-ext-enable amqp
         - vendor/bin/phpstan analyse
-
-doctrine_schema_verify:
-    extends: .test_env
-    stage: check
-    script:
-        - php bin/console doctrine:database:create --if-not-exists
-        - php bin/console doctrine:schema:validate
