@@ -39,11 +39,12 @@ phpunit:
         - openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
         - php bin/console doctrine:database:create --if-not-exists
         - php bin/console doctrine:schema:update --force
-        - vendor/bin/phpunit --testdox --color
+        - php bin/phpunit --testdox
+        - php bin/console doctrine:schema:validate
 
 phpstan:
     stage: test
     tags: [ runner ]
     dependencies: [ composer ]
     script:
-        - vendor/bin/phpstan analyse
+        - vendor/bin/phpstan analyse --memory-limit=512MB
