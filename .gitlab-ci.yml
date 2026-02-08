@@ -33,7 +33,8 @@ install_deps:
         - docker-php-ext-install zip pdo_pgsql
         - pecl install amqp && docker-php-ext-enable amqp
 
-        - curl -sS https://getcomposer.org | php -- --install-dir=/usr/local/bin --filename=composer
+        - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
     script:
         - composer install --no-progress --no-interaction
     artifacts:
