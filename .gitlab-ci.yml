@@ -47,4 +47,4 @@ phpstan:
     tags: [ runner ]
     dependencies: [ composer ]
     script:
-        - vendor/bin/phpstan analyse --memory-limit=512MB
+        - vendor/bin/phpstan analyse --memory-limit=-1
