@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final readonly class ParseDebugCommand
 {
     public function __construct(
-        protected ProductGenerator $entityGenerator,
+        private ProductGenerator $entityGenerator,
     ) {
     }
 

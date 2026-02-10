@@ -32,8 +32,8 @@ final readonly class ProductBusCommand
         } catch (\Throwable $e) {
             $output->writeln(
                 'Ошибка отправки cooбщения '
-                . CreateProductAsync::class
-                . ' в очередь :' . $e->getMessage()
+                .CreateProductAsync::class
+                .' в очередь :'.$e->getMessage()
             );
 
             return Command::FAILURE;

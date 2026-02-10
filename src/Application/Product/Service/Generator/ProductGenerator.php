@@ -36,7 +36,7 @@ final readonly class ProductGenerator implements EntityGenerator
 
             $this->logger->info('Товары успешно добавлены');
         } catch (\Throwable $e) {
-            $this->logger->error('Товары не добавлены: ' . $e->getMessage());
+            $this->logger->error('Товары не добавлены: '.$e->getMessage());
         }
     }
 
