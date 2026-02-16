@@ -1,13 +1,15 @@
-<h1>Дипломный проект на Symfony framework</h1>
+<h1>Магазин товаров на Symfony 7</h1>
 
-Предполагаемый стек технологий:
+Технологический стек:
 <ul>
 <li>Docker</li>
 <li>Nginx</li>
 <li>PHP 8.4 (Symfony 7 framework)</li>
 <li>PostgreSQL 15</li>
 <li>RabbitMQ</li>
-<li>PhpUnit</li>
+<li>phpUnit</li>
+<li>phpStan</li>
+<li>cs-fixer</li>
 </ul>
 
 <h3>Для запуска парсера товаров в каталог необходимо:</h3>
