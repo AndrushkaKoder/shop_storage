@@ -1,31 +1,47 @@
 name: PHP CI
 
-on:
-    push:
-        branches: [ "main", "master" ]
-    pull_request:
-        branches: [ "main", "master" ]
+on: [push, pull_request]
 
 jobs:
-    build-and-test:
+    ci:
         runs-on: ubuntu-latest
 
+        services:
+            postgres:
+                image: postgres:15-alpine
+                env:
+                    POSTGRES_DB: shop
+                    POSTGRES_USER: user
+                    POSTGRES_PASSWORD: password
+                ports: ["5432:5432"]
+                options: --health-cmd pg_isready --health-interval 10s
+
+        env:
+            APP_ENV: test
+            DATABASE_URL: "postgresql://user:password@localhost:5432/shop?serverVersion=16&charset=utf8"
+
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+            - uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.4'
-                  extensions: mbstring, xml, ctype, iconv, mysql, intl
-                  coverage: none
+                  extensions: mbstring, intl, pdo_postgresql
 
-            - name: Install Dependencies
-              run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+            - name: Composer
+              run: composer install --no-interaction --prefer-dist
 
-            - name: phpstan (Analyse)
+            - name: Prepare App (JWT & DB)
+              run: |
+                  mkdir -p config/jwt
+                  openssl genrsa -out config/jwt/private.pem 4096
+                  openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+                  php bin/console doctrine:database:create --if-not-exists
+                  php bin/console doctrine:schema:update --force
+
+            - name: Static Analysis (PHPStan)
               run: ./vendor/bin/phpstan analyse
 
-            - name: phpunit (Tests)
-              run: ./vendor/bin/phpunit --testdox
+            - name: Run Tests
+              run: php bin/phpunit --testdox
