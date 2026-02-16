@@ -1,0 +1,31 @@
+name: PHP CI
+
+on:
+    push:
+        branches: [ "main", "master" ]
+    pull_request:
+        branches: [ "main", "master" ]
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: mbstring, xml, ctype, iconv, mysql, intl
+                  coverage: none
+
+            - name: Install Dependencies
+              run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+            - name: phpstan (Analyse)
+              run: ./vendor/bin/phpstan analyse
+
+            - name: phpunit (Tests)
+              run: ./vendor/bin/phpunit --testdox
